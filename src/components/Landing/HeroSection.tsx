@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Heart, Shield, Smartphone } from "lucide-react";
-import heroImage from "@/assets/healthcare-hero.jpg";
 
 const HeroSection = () => {
   return (
@@ -80,9 +79,10 @@ const HeroSection = () => {
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
               <img 
-                src={heroImage} 
+                src="/healthcare-hero.jpg" 
                 alt="HealthMate AI - Digital healthcare companion showing patient monitoring and care" 
                 className="w-full h-auto"
+                fetchPriority="high"
               />
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent"></div>
             </div>
