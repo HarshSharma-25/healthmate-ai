@@ -78,14 +78,21 @@ const HeroSection = () => {
           {/* Hero Image */}
           <div className="relative">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-              <img 
-                src="/healthcare-hero-635w.jpg" 
-                srcSet="/healthcare-hero-400w.jpg 400w, /healthcare-hero-635w.jpg 635w, /healthcare-hero-800w.jpg 800w"
-                sizes="(max-width: 640px) 400px, (max-width: 1024px) 635px, 800px"
-                alt="HealthMate AI - Digital healthcare companion showing patient monitoring and care" 
-                className="w-full h-auto"
-                fetchPriority="high"
-              />
+              <picture>
+                <source 
+                  srcSet="/healthcare-hero-400w.webp 400w, /healthcare-hero-635w.webp 635w, /healthcare-hero-800w.webp 800w" 
+                  sizes="(max-width: 640px) 400px, (max-width: 1024px) 635px, 800px"
+                  type="image/webp"
+                />
+                <img 
+                  src="/healthcare-hero-635w.jpg" 
+                  srcSet="/healthcare-hero-400w.jpg 400w, /healthcare-hero-635w.jpg 635w, /healthcare-hero-800w.jpg 800w"
+                  sizes="(max-width: 640px) 400px, (max-width: 1024px) 635px, 800px"
+                  alt="HealthMate AI - Digital healthcare companion showing patient monitoring and care" 
+                  className="w-full h-auto"
+                  fetchPriority="high"
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent"></div>
             </div>
             
