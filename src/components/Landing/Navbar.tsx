@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Heart, Menu, X } from "lucide-react";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,12 +23,12 @@ const Navbar = () => {
             <a href="#features" className="text-foreground hover:text-primary transition-colors">
               Features
             </a>
-            <a href="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
+            <Link to="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
               Ambulance
-            </a>
-            <a href="/ward-booking" className="text-foreground hover:text-primary transition-colors">
+            </Link>
+            <Link to="/ward-booking" className="text-foreground hover:text-primary transition-colors">
               Ward Booking
-            </a>
+            </Link>
             <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
               Pricing
             </a>
@@ -36,10 +37,10 @@ const Navbar = () => {
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" className="text-foreground hover:text-primary" asChild>
-              <a href="/login">Sign In</a>
+              <Link to="/login">Sign In</Link>
             </Button>
             <Button className="bg-primary hover:bg-primary/90 text-primary-foreground" asChild>
-              <a href="/dashboard">Dashboard</a>
+              <Link to="/dashboard">Dashboard</Link>
             </Button>
           </div>
 
@@ -59,21 +60,21 @@ const Navbar = () => {
               <a href="#features" className="text-foreground hover:text-primary transition-colors">
                 Features
               </a>
-              <a href="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
+              <Link to="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
                 Ambulance
-              </a>
-              <a href="/ward-booking" className="text-foreground hover:text-primary transition-colors">
+              </Link>
+              <Link to="/ward-booking" className="text-foreground hover:text-primary transition-colors">
                 Ward Booking
-              </a>
+              </Link>
               <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
                 Pricing
               </a>
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
                 <Button variant="ghost" className="text-foreground hover:text-primary justify-start" asChild>
-                  <a href="/login">Sign In</a>
+                  <Link to="/login">Sign In</Link>
                 </Button>
                 <Button className="bg-primary hover:bg-primary/90 text-primary-foreground justify-start" asChild>
-                  <a href="/dashboard">Dashboard</a>
+                  <Link to="/dashboard">Dashboard</Link>
                 </Button>
               </div>
             </div>
