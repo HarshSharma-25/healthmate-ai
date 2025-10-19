@@ -22,11 +22,11 @@ const Navbar = () => {
             <a href="#features" className="text-foreground hover:text-primary transition-colors">
               Features
             </a>
-            <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors">
-              How It Works
+            <a href="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
+              Ambulance
             </a>
-            <a href="#for-doctors" className="text-foreground hover:text-primary transition-colors">
-              For Doctors
+            <a href="/ward-booking" className="text-foreground hover:text-primary transition-colors">
+              Ward Booking
             </a>
             <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
               Pricing
@@ -59,11 +59,11 @@ const Navbar = () => {
               <a href="#features" className="text-foreground hover:text-primary transition-colors">
                 Features
               </a>
-              <a href="#how-it-works" className="text-foreground hover:text-primary transition-colors">
-                How It Works
+              <a href="/ambulance-tracking" className="text-foreground hover:text-primary transition-colors">
+                Ambulance
               </a>
-              <a href="#for-doctors" className="text-foreground hover:text-primary transition-colors">
-                For Doctors
+              <a href="/ward-booking" className="text-foreground hover:text-primary transition-colors">
+                Ward Booking
               </a>
               <a href="#pricing" className="text-foreground hover:text-primary transition-colors">
                 Pricing
