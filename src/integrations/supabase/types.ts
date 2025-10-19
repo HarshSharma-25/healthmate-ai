@@ -14,7 +14,214 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ambulance_bookings: {
+        Row: {
+          ambulance_id: string | null
+          created_at: string
+          destination_address: string
+          destination_latitude: number | null
+          destination_longitude: number | null
+          emergency_type: string
+          estimated_arrival: string | null
+          id: string
+          patient_name: string
+          patient_phone: string
+          pickup_address: string
+          pickup_latitude: number | null
+          pickup_longitude: number | null
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          ambulance_id?: string | null
+          created_at?: string
+          destination_address: string
+          destination_latitude?: number | null
+          destination_longitude?: number | null
+          emergency_type: string
+          estimated_arrival?: string | null
+          id?: string
+          patient_name: string
+          patient_phone: string
+          pickup_address: string
+          pickup_latitude?: number | null
+          pickup_longitude?: number | null
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          ambulance_id?: string | null
+          created_at?: string
+          destination_address?: string
+          destination_latitude?: number | null
+          destination_longitude?: number | null
+          emergency_type?: string
+          estimated_arrival?: string | null
+          id?: string
+          patient_name?: string
+          patient_phone?: string
+          pickup_address?: string
+          pickup_latitude?: number | null
+          pickup_longitude?: number | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ambulance_bookings_ambulance_id_fkey"
+            columns: ["ambulance_id"]
+            isOneToOne: false
+            referencedRelation: "ambulances"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ambulances: {
+        Row: {
+          ambulance_type: string
+          created_at: string
+          current_latitude: number | null
+          current_longitude: number | null
+          driver_name: string
+          driver_phone: string
+          id: string
+          last_location_update: string | null
+          status: string
+          updated_at: string
+          vehicle_number: string
+        }
+        Insert: {
+          ambulance_type: string
+          created_at?: string
+          current_latitude?: number | null
+          current_longitude?: number | null
+          driver_name: string
+          driver_phone: string
+          id?: string
+          last_location_update?: string | null
+          status?: string
+          updated_at?: string
+          vehicle_number: string
+        }
+        Update: {
+          ambulance_type?: string
+          created_at?: string
+          current_latitude?: number | null
+          current_longitude?: number | null
+          driver_name?: string
+          driver_phone?: string
+          id?: string
+          last_location_update?: string | null
+          status?: string
+          updated_at?: string
+          vehicle_number?: string
+        }
+        Relationships: []
+      }
+      hospital_wards: {
+        Row: {
+          amenities: string[] | null
+          available_beds: number
+          created_at: string
+          department: string
+          floor_number: number | null
+          id: string
+          price_per_day: number
+          total_beds: number
+          updated_at: string
+          ward_name: string
+          ward_type: string
+        }
+        Insert: {
+          amenities?: string[] | null
+          available_beds: number
+          created_at?: string
+          department: string
+          floor_number?: number | null
+          id?: string
+          price_per_day: number
+          total_beds: number
+          updated_at?: string
+          ward_name: string
+          ward_type: string
+        }
+        Update: {
+          amenities?: string[] | null
+          available_beds?: number
+          created_at?: string
+          department?: string
+          floor_number?: number | null
+          id?: string
+          price_per_day?: number
+          total_beds?: number
+          updated_at?: string
+          ward_name?: string
+          ward_type?: string
+        }
+        Relationships: []
+      }
+      ward_bookings: {
+        Row: {
+          admission_date: string
+          created_at: string
+          discharge_date: string | null
+          doctor_name: string | null
+          id: string
+          medical_condition: string | null
+          patient_age: number
+          patient_name: string
+          patient_phone: string
+          special_requirements: string | null
+          status: string
+          updated_at: string
+          user_id: string
+          ward_id: string
+        }
+        Insert: {
+          admission_date: string
+          created_at?: string
+          discharge_date?: string | null
+          doctor_name?: string | null
+          id?: string
+          medical_condition?: string | null
+          patient_age: number
+          patient_name: string
+          patient_phone: string
+          special_requirements?: string | null
+          status?: string
+          updated_at?: string
+          user_id: string
+          ward_id: string
+        }
+        Update: {
+          admission_date?: string
+          created_at?: string
+          discharge_date?: string | null
+          doctor_name?: string | null
+          id?: string
+          medical_condition?: string | null
+          patient_age?: number
+          patient_name?: string
+          patient_phone?: string
+          special_requirements?: string | null
+          status?: string
+          updated_at?: string
+          user_id?: string
+          ward_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ward_bookings_ward_id_fkey"
+            columns: ["ward_id"]
+            isOneToOne: false
+            referencedRelation: "hospital_wards"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
