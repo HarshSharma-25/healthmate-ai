@@ -1,21 +1,10 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Ambulance, MapPin, Phone, User } from "lucide-react";
-import "leaflet/dist/leaflet.css";
-import L from "leaflet";
-
-// Fix for default marker icons in react-leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png",
-  iconUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png",
-  shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
-});
 
 interface AmbulanceData {
   id: string;
@@ -117,31 +106,11 @@ const AmbulanceTracking = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-[500px] rounded-lg overflow-hidden">
-                  {/* @ts-ignore - react-leaflet type definitions issue */}
-                  <MapContainer
-                    center={center}
-                    zoom={11}
-                    style={{ height: "100%", width: "100%" }}
-                  >
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    {ambulances
-                      .filter((amb) => amb.current_latitude && amb.current_longitude)
-                      .map((ambulance) => (
-                        <Marker
-                          key={ambulance.id}
-                          position={[ambulance.current_latitude, ambulance.current_longitude]}
-                        >
-                          <Popup>
-                            <div className="space-y-1">
-                              <p className="font-bold">{ambulance.vehicle_number}</p>
-                              <p className="text-sm">Type: {ambulance.ambulance_type}</p>
-                              <p className="text-sm">Status: {ambulance.status}</p>
-                              <p className="text-sm">Driver: {ambulance.driver_name}</p>
-                            </div>
-                          </Popup>
-                        </Marker>
-                      ))}
-                  </MapContainer>
+                  <iframe
+                    title="Ambulance Map"
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${center[1] - 0.15},${center[0] - 0.1},${center[1] + 0.15},${center[0] + 0.1}&layer=mapnik`}
+                    style={{ width: "100%", height: "100%", border: 0 }}
+                  />
                 </div>
               </CardContent>
             </Card>
