@@ -106,31 +106,11 @@ const AmbulanceTracking = () => {
               </CardHeader>
               <CardContent>
                 <div className="h-[500px] rounded-lg overflow-hidden">
-                  {/* @ts-ignore - react-leaflet type definitions issue */}
-                  <MapContainer
-                    center={center}
-                    zoom={11}
-                    style={{ height: "100%", width: "100%" }}
-                  >
-                    <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
-                    {ambulances
-                      .filter((amb) => amb.current_latitude && amb.current_longitude)
-                      .map((ambulance) => (
-                        <Marker
-                          key={ambulance.id}
-                          position={[ambulance.current_latitude, ambulance.current_longitude]}
-                        >
-                          <Popup>
-                            <div className="space-y-1">
-                              <p className="font-bold">{ambulance.vehicle_number}</p>
-                              <p className="text-sm">Type: {ambulance.ambulance_type}</p>
-                              <p className="text-sm">Status: {ambulance.status}</p>
-                              <p className="text-sm">Driver: {ambulance.driver_name}</p>
-                            </div>
-                          </Popup>
-                        </Marker>
-                      ))}
-                  </MapContainer>
+                  <iframe
+                    title="Ambulance Map"
+                    src={`https://www.openstreetmap.org/export/embed.html?bbox=${center[1] - 0.15},${center[0] - 0.1},${center[1] + 0.15},${center[0] + 0.1}&layer=mapnik`}
+                    style={{ width: "100%", height: "100%", border: 0 }}
+                  />
                 </div>
               </CardContent>
             </Card>
