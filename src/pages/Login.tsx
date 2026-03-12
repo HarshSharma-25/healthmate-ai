@@ -7,30 +7,40 @@ import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Heart } from "lucide-react";
 
-const authSchema = z.object({
+const signInSchema = z.object({
   email: z.string().email("Invalid email format").max(255),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+const signUpSchema = signInSchema
+  .extend({
+    confirmPassword: z.string().min(6, "Password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 const Login = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" && session) {
         navigate("/dashboard");
       }
     });
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
         navigate("/dashboard");
       }
     });
@@ -43,28 +53,47 @@ const Login = () => {
     setLoading(true);
 
     try {
-      // Validate inputs
-      authSchema.parse({ email, password });
+      const normalizedEmail = email.trim().toLowerCase();
 
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
+        signUpSchema.parse({ email: normalizedEmail, password, confirmPassword });
+
+        const { data, error } = await supabase.auth.signUp({
+          email: normalizedEmail,
           password,
           options: {
-            emailRedirectTo: `${window.location.origin}/dashboard`,
+            emailRedirectTo: window.location.origin,
           },
         });
 
         if (error) throw error;
 
+        if (!data.user) {
+          throw new Error("Could not create account. Please try again.");
+        }
+
+        if (Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          toast({
+            variant: "destructive",
+            title: "Account already exists",
+            description: "This email is already registered. Please sign in instead.",
+          });
+          setIsSignUp(false);
+          return;
+        }
+
         toast({
           title: "Account created!",
-          description: "You can now sign in with your credentials.",
+          description: "Check your email to verify your account before signing in.",
         });
         setIsSignUp(false);
+        setPassword("");
+        setConfirmPassword("");
       } else {
+        signInSchema.parse({ email: normalizedEmail, password });
+
         const { error } = await supabase.auth.signInWithPassword({
-          email,
+          email: normalizedEmail,
           password,
         });
 
@@ -76,11 +105,18 @@ const Login = () => {
         });
         navigate("/dashboard");
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const message =
+        error instanceof z.ZodError
+          ? error.issues[0]?.message
+          : error instanceof Error
+            ? error.message
+            : "Please check your details and try again.";
+
       toast({
         variant: "destructive",
         title: isSignUp ? "Sign up failed" : "Sign in failed",
-        description: error.message || "Please check your credentials and try again.",
+        description: message,
       });
     } finally {
       setLoading(false);
@@ -99,7 +135,7 @@ const Login = () => {
           </h1>
           <p className="text-muted-foreground">
             {isSignUp
-              ? "Sign up to access your healthcare services"
+              ? "Create your account to access your healthcare services"
               : "Sign in to access your healthcare dashboard"}
           </p>
         </div>
@@ -136,29 +172,42 @@ const Login = () => {
                 minLength={6}
               />
             </div>
+
+            {isSignUp && (
+              <div className="space-y-2">
+                <label htmlFor="confirmPassword" className="text-sm font-medium">
+                  Confirm Password
+                </label>
+                <Input
+                  id="confirmPassword"
+                  type="password"
+                  placeholder="••••••••"
+                  className="w-full"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  minLength={6}
+                />
+              </div>
+            )}
           </div>
 
-          {!isSignUp && (
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input type="checkbox" className="rounded" />
-                <span className="text-muted-foreground">Remember me</span>
-              </label>
-            </div>
-          )}
-
           <Button type="submit" className="w-full" size="lg" disabled={loading}>
-            {loading ? "Loading..." : isSignUp ? "Sign Up" : "Sign In"}
+            {loading ? (isSignUp ? "Creating account..." : "Signing in...") : isSignUp ? "Create Account" : "Sign In"}
           </Button>
 
           <p className="text-center text-sm text-muted-foreground">
             {isSignUp ? "Already have an account? " : "Don't have an account? "}
             <button
               type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={() => {
+                setIsSignUp(!isSignUp);
+                setPassword("");
+                setConfirmPassword("");
+              }}
               className="text-primary hover:underline font-medium"
             >
-              {isSignUp ? "Sign in" : "Sign up"}
+              {isSignUp ? "Sign in" : "Create account"}
             </button>
           </p>
         </form>
@@ -174,3 +223,4 @@ const Login = () => {
 };
 
 export default Login;
+
