@@ -12,6 +12,7 @@ const Login = lazy(() => import("./pages/Login"));
 const AmbulanceTracking = lazy(() => import("./pages/AmbulanceTracking"));
 const AmbulanceBooking = lazy(() => import("./pages/AmbulanceBooking"));
 const WardBooking = lazy(() => import("./pages/WardBooking"));
+const BodyAnatomy = lazy(() => import("./pages/BodyAnatomy"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
