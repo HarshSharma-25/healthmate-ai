@@ -61,9 +61,6 @@ const Login = () => {
         const { data, error } = await supabase.auth.signUp({
           email: normalizedEmail,
           password,
-          options: {
-            emailRedirectTo: window.location.origin,
-          },
         });
 
         if (error) throw error;
@@ -106,12 +103,21 @@ const Login = () => {
         navigate("/dashboard");
       }
     } catch (error: unknown) {
-      const message =
+      console.error("Authentication error:", error);
+
+      const rawMessage =
         error instanceof z.ZodError
           ? error.issues[0]?.message
           : error instanceof Error
             ? error.message
             : "Please check your details and try again.";
+
+      const normalizedMessage = rawMessage?.toLowerCase() ?? "";
+      const message = normalizedMessage.includes("rate limit")
+        ? "Too many attempts just now. Please wait a few minutes and try again."
+        : normalizedMessage.includes("failed to fetch")
+          ? "Couldn't reach the authentication service. Please try again in a moment."
+          : rawMessage;
 
       toast({
         variant: "destructive",
